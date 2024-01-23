@@ -10,7 +10,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{E5D8D69B-BB30-0FAE-49C0-9759B4B94DBB}</ProjectGuid>
+    <ProjectGuid>{A4E29ED4-58F9-DFFA-17D2-A1D46E218C62}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -64,6 +64,7 @@
     <Compile Include="Assets\Scripts\Utils\Define.cs" />
     <Compile Include="Assets\Scripts\UI\Popup\UI_Button.cs" />
     <Compile Include="Assets\Scripts\Managers\Core\DataManager.cs" />
+    <Compile Include="Assets\Scripts\UI\Craft\CraftManual.cs" />
     <Compile Include="Assets\Scripts\Managers\Core\PoolManager.cs" />
     <Compile Include="Assets\Scripts\Utils\Extension.cs" />
     <Compile Include="Assets\Scripts\Managers\Contents\BlinkAnim.cs" />
@@ -81,10 +82,12 @@
     <Compile Include="Assets\Scripts\Contents\PlayerStat.cs" />
     <Compile Include="Assets\Scripts\Controllers\BaseController.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\NpcController.cs" />
     <Compile Include="Assets\Scripts\Scenes\GameScene.cs" />
     <Compile Include="Assets\Scripts\UI\UI_EventHandler.cs" />
     <Compile Include="Assets\Scripts\UI\SubItem\UI_Inven_Item.cs" />
     <Compile Include="Assets\Scripts\Contents\SpawningPool.cs" />
+    <Compile Include="Assets\Scripts\Managers\Contents\TransparentObject.cs" />
     <Compile Include="Assets\Scripts\Managers\Core\SoundManager.cs" />
     <Compile Include="Assets\Scripts\Managers\Contents\GameManagerEx.cs" />
     <Compile Include="Assets\Scripts\UI\Scene\UI_Scene.cs" />
@@ -97,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\Art\UnityChan\Shader\Unitychan_chara_fuku.shader" />
+    <None Include="Assets\A\Water Shader\Water_Shader.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\Resources\Art\Town\Readme.txt" />

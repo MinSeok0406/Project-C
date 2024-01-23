@@ -29,11 +29,18 @@ public class MainScene : BaseScene
         Managers.Scene.LoadScene(Define.Scene.Game);
     }
 
+    public void GameLoad()
+    {
+        Managers.UI.CloseAllPopupUI();
+
+        Managers.UI.ShowPopupUI<UI_Button>("LoadScene");
+    }
+
     public void GameSettings()
     {
         Managers.UI.CloseAllPopupUI();
 
-        Managers.UI.ShowPopupUI<UI_Button>("Settings");
+        Managers.UI.ShowPopupUI<UI_Button>("SettingScene");
     }
 
     public void GameExit()
@@ -43,6 +50,13 @@ public class MainScene : BaseScene
         #else
             Application.Quit();
         #endif
+    }
+
+    public void BackKey()
+    {
+        Managers.UI.CloseAllPopupUI();
+
+        Managers.UI.ShowPopupUI<UI_Button>("Main");
     }
 
     public override void Clear()

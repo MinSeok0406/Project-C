@@ -29,18 +29,24 @@ public class CameraController : MonoBehaviour
                 return;
             }
 
-            RaycastHit hit;
-            if (Physics.Raycast(_player.transform.position, _delta, out hit, _delta.magnitude, 1 << (int)Define.Layer.Block))
+            transform.position = _player.transform.position + _delta;
+            transform.LookAt(_player.transform);
+
+            // 건물 뒤에 서 있으면 투명화
+            Vector3 direction = (_player.transform.position - transform.position).normalized;
+            RaycastHit[] hits = Physics.RaycastAll(transform.position, direction, Mathf.Infinity,
+                        1 << LayerMask.NameToLayer("Block"));
+
+            for (int i = 0; i < hits.Length; i++)
             {
-                float dist = (hit.point - _player.transform.position).magnitude * 0.8f;
-                transform.position = _player.transform.position + _delta.normalized * dist;
+                TransparentObject[] obj = hits[i].transform.GetComponentsInChildren<TransparentObject>();
+
+                for (int j = 0; j < obj.Length; j++)
+                {
+                    obj[j]?.BecomeTransparent();
+                }
             }
-            else
-            {
-				transform.position = _player.transform.position + _delta;
-				transform.LookAt(_player.transform);
-			}
-		}
+        }
     }
 
     public void SetQuarterView(Vector3 delta)

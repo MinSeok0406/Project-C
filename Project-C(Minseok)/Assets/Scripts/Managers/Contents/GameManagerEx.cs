@@ -8,6 +8,7 @@ public class GameManagerEx
     GameObject _player;
     //Dictionary<int, GameObject> _players = new Dictionary<int, GameObject>();
     HashSet<GameObject> _monsters = new HashSet<GameObject>();
+    HashSet<GameObject> _npc = new HashSet<GameObject>();
 
     public Action<int> OnSpawnEvent;
 
@@ -26,6 +27,11 @@ public class GameManagerEx
                 break;
             case Define.WorldObject.Player:
                 _player = go;
+                break;
+            case Define.WorldObject.Npc:
+                _npc.Add(go);
+                if (OnSpawnEvent != null)
+                    OnSpawnEvent.Invoke(1);
                 break;
         }
 
@@ -62,6 +68,16 @@ public class GameManagerEx
 					if (_player == go)
 						_player = null;
 				}
+                break;
+            case Define.WorldObject.Npc:
+                {
+                    if (_npc.Contains(go))
+                    {
+                        _npc.Remove(go);
+                        if (OnSpawnEvent != null)
+                            OnSpawnEvent.Invoke(-1);
+                    }
+                }
                 break;
         }
 

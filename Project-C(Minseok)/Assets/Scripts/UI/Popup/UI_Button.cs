@@ -36,6 +36,7 @@ public class UI_Button : UI_Popup
     enum Images
     {
         ItemIcon,
+        Craft,
     }
 
     public override void Init()

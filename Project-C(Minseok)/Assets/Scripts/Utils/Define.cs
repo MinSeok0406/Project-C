@@ -10,6 +10,7 @@ public class Define
         Unknown,
         Player,
         Monster,
+        Npc,
     }
 
     // Controller관련 이벤트 관리
@@ -60,6 +61,13 @@ public class Define
         PointerDown,
         PointerUp,
         Click,
+    }
+
+    public enum KeyEvent
+    {
+        MovePress,
+        MoveDown,
+        MoveUp,
     }
 
     // Camera관련 이벤트 관리

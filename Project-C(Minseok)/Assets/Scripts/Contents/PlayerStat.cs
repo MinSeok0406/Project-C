@@ -44,6 +44,9 @@ public class PlayerStat : Stat
 		_exp = 0;
 		_defense = 5;
 		_moveSpeed = 5.0f;
+		_dashingPower = 10.0f;
+		_dashingTime = 0.2f;
+		_dashingCooldown = 0.1f;
 		_gold = 0;
 
 		SetStat(_level);

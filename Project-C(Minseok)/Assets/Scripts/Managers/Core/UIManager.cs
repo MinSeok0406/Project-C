@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,8 +15,8 @@ public class UIManager
     {
         get
         {
-			GameObject root = GameObject.Find("@UI_Root");
-			if (root == null)
+            GameObject root = GameObject.Find("@UI_Root");
+            if (root == null)
 				root = new GameObject { name = "@UI_Root" };
             return root;
 		}
@@ -41,7 +42,7 @@ public class UIManager
         }
     }
 
-	public T MakeWorldSpaceUI<T>(Transform parent = null, string name = null) where T : UI_Base
+    public T MakeWorldSpaceUI<T>(Transform parent = null, string name = null) where T : UI_Base
 	{
 		if (string.IsNullOrEmpty(name))
 			name = typeof(T).Name;
@@ -97,6 +98,21 @@ public class UIManager
         go.transform.SetParent(Root.transform);
 
 		return popup;
+    }
+
+    public T ShowCraftUI<T>(string name = null) where T : UI_Popup
+    {
+        if (string.IsNullOrEmpty(name))
+            name = typeof(T).Name;
+
+        GameObject go = Managers.Resource.Instantiate($"UI/Craft/{name}");
+        T popup = Util.GetOrAddComponent<T>(go);
+        _popupStack.Push(popup);
+
+        // 게임오브젝트에서 관리할 때 하나의 오브젝트의 자식으로 생성해서 관리
+        go.transform.SetParent(Root.transform);
+
+        return popup;
     }
 
     public void ClosePopupUI(UI_Popup popup)
