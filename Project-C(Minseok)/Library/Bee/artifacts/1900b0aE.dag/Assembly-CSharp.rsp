@@ -380,6 +380,7 @@
 "Assets/Scripts/Utils/Define.cs"
 "Assets/Scripts/Utils/Extension.cs"
 "Assets/Scripts/Utils/Util.cs"
+"Assets/Scripts/Weapon/Gun/Bullet.cs"
 -langversion:9.0
 
 /deterministic

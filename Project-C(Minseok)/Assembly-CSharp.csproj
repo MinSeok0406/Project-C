@@ -81,6 +81,7 @@
     <Compile Include="Assets\Scripts\Data\Data.Contents.cs" />
     <Compile Include="Assets\Scripts\Contents\PlayerStat.cs" />
     <Compile Include="Assets\Scripts\Controllers\BaseController.cs" />
+    <Compile Include="Assets\Scripts\Weapon\Gun\Bullet.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Controllers\NpcController.cs" />
     <Compile Include="Assets\Scripts\Scenes\GameScene.cs" />

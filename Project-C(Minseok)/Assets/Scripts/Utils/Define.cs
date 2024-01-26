@@ -13,6 +13,14 @@ public class Define
         Npc,
     }
 
+    public enum Weapons
+    {
+        Unknown,
+        Sword,
+        HandGun,
+        ShotGun,
+    }
+
     // Controller관련 이벤트 관리
     public enum State
 	{

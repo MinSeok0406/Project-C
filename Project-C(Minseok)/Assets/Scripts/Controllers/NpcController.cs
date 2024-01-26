@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class NpcController : MonoBehaviour
 {
-    GameObject player = Managers.Game.GetPlayer();
+    private GameObject player = Managers.Game.GetPlayer();
     public Define.WorldObject WorldObjectType { get; protected set; } = Define.WorldObject.Unknown;
 
     public void init()
