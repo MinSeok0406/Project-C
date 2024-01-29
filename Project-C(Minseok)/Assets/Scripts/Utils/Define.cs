@@ -45,6 +45,7 @@ public class Define
         Start,
         Main,
         Game,
+        World,
     }
 
     // Sound관련 이벤트 관리
