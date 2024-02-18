@@ -5,7 +5,20 @@ using UnityEngine.AI;
 
 public class PlayerController : BaseController
 {
-	int _mask = (1 << (int)Define.Layer.Ground) | (1 << (int)Define.Layer.Monster);
+    [SerializeField] 
+    Transform groundCheck;
+
+    [SerializeField] 
+    Transform raycastOrigin;
+
+    [SerializeField] 
+    float maxSlopeAngle;
+
+    int _mask = (1 << (int)Define.Layer.Ground) | (1 << (int)Define.Layer.Monster);
+
+    private const float RAY_DISTANCE = 2f;
+    private RaycastHit slopeHit;
+    private int groundLayer = 1 << (int)Define.Layer.Ground;
 
     public GameObject Sword;
     public GameObject HandGun;
@@ -14,12 +27,56 @@ public class PlayerController : BaseController
     PlayerStat _stat;
     Rigidbody _rb;
     CapsuleCollider _cc;
+    Transform _aimPoint;
+
 	bool _stopSkill = false;
+    public float _attackRate = 3.0f;
+    public float _range = 100.0f;
+    private float _attackTimer;
     private bool _canDash = true;
     private bool _isDashing = true;
     private bool _canMove = true;
 
     public Define.Weapons Weapon { get; protected set; } = Define.Weapons.Unknown;
+
+    public bool IsOnSlope()
+    {
+        Ray ray = new Ray(transform.position, Vector3.down);
+        if (Physics.Raycast(ray, out slopeHit, RAY_DISTANCE, groundLayer))
+        {
+            var angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+            return angle != 0f && angle < maxSlopeAngle;
+        }
+        return false;
+    }
+
+    protected Vector3 AdjustDirectionToSlope(Vector3 direction)
+    {
+        return Vector3.ProjectOnPlane(direction, slopeHit.normal).normalized;
+    }
+
+    public bool IsGrounded()
+    {
+        Vector3 boxSize = new Vector3(transform.lossyScale.x, 0.4f, transform.lossyScale.z);
+        return Physics.CheckBox(groundCheck.position, boxSize, Quaternion.identity, groundLayer);
+    }
+    // Quaternion.identity는 회전값이 없다는 의미입니다.
+
+    private float CalculateNextFrameGroundAngle(float moveSpeed)
+    {
+        float hAxis = Input.GetAxisRaw("Horizontal");
+        float vAxis = Input.GetAxisRaw("Vertical");
+
+        Vector3 dir = new Vector3(hAxis, 0, vAxis);
+
+        // 다음 프레임 캐릭터 앞 부분 위치
+        var nextFramePlayerPosition = raycastOrigin.position + dir * moveSpeed * Time.fixedDeltaTime;
+
+        if (Physics.Raycast(nextFramePlayerPosition, Vector3.down, out RaycastHit hitInfo,
+                            RAY_DISTANCE, groundLayer))
+            return Vector3.Angle(Vector3.up, hitInfo.normal);
+        return 0f;
+    }
 
     public override void Init()
     {
@@ -57,6 +114,9 @@ public class PlayerController : BaseController
 
     protected void Update()
     {
+        if (IsOnSlope() || _canDash)
+            _rb.useGravity = true;
+
         UpdateCamera();
 
         if (_canMove)
@@ -72,6 +132,13 @@ public class PlayerController : BaseController
             StartCoroutine(Dash());
 
         NpcScript("UI_NPC_Text");
+
+        if (Input.GetMouseButtonDown(0))
+            Attack();
+            
+
+        if (_attackTimer < _attackRate)
+            _attackTimer += Time.deltaTime;
     }
 
     private void WeaponEquip()
@@ -112,6 +179,42 @@ public class PlayerController : BaseController
         }
     }
 
+    private void Attack()
+    {
+        RaycastHit _hit;
+        Ray _cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Vector3 _mousePos = _cameraRay.GetPoint(5.0f);
+        Vector3 _dir = (_mousePos - transform.position).normalized;
+
+        if (Weapon == Define.Weapons.Unknown)
+        {
+            return;
+        }
+
+        if (Weapon == Define.Weapons.Sword)
+        {
+
+        }
+        else if (Weapon == Define.Weapons.HandGun)
+        {
+            if (Physics.Raycast(transform.position, transform.forward, out _hit, _range))
+            {
+                GameObject _bullet = Managers.Resource.Instantiate("Weapon/Gun/Bullet HandGun");
+                _bullet.transform.position = transform.position + transform.forward;
+                Destroy(_bullet, 1.0f);
+            }
+        }
+        else if (Weapon == Define.Weapons.ShotGun)
+        {
+            if (Physics.Raycast(transform.position, transform.forward, out _hit, _range))
+            {
+                GameObject _bullet = Managers.Resource.Instantiate("Weapon/Gun/Bullet ShotGun");
+                _bullet.transform.position = transform.position + transform.forward;
+                Destroy(_bullet, 1.0f);
+            }
+        }
+    }
+
     private void NpcScript(string prefab = null)
     {
         GameObject root = Managers.UI.Root.gameObject;
@@ -129,31 +232,49 @@ public class PlayerController : BaseController
 
     private void UpdateMove()
     {
+        bool isOnSlope = IsOnSlope();
+        bool isGrounded = IsGrounded();
         float hAxis = Input.GetAxisRaw("Horizontal");
         float vAxis = Input.GetAxisRaw("Vertical");
 
         Vector3 dir = new Vector3(hAxis, 0, vAxis);
+        Vector3 velocity = CalculateNextFrameGroundAngle(_stat.MoveSpeed) < maxSlopeAngle ? dir : Vector3.zero;
+        Vector3 gravity = Vector3.down * Mathf.Abs(_rb.velocity.y);
+
+        if (isGrounded && isOnSlope)         // 경사로에 있을 때
+        {
+            velocity = AdjustDirectionToSlope(dir);
+            gravity = Vector3.zero;
+            _rb.useGravity = false;
+        }
+        else
+        {
+            _rb.useGravity = true;
+        }
 
         if (dir.magnitude < 0.1f)
         {
+            _rb.velocity = Vector3.zero;
             State = Define.State.Idle;
         }
         else
         {
             if (hAxis == 0 && vAxis == 0)
             {
+                _rb.velocity = Vector3.zero;
                 State = Define.State.Idle;
             }
+            _rb.velocity = velocity * _stat.MoveSpeed + gravity;
             //State = Define.State.Moving;
-            float moveDist = Mathf.Clamp(_stat.MoveSpeed * Time.deltaTime, 0, dir.magnitude);
-            transform.position += dir.normalized * moveDist;
+            //float moveDist = Mathf.Clamp(_stat.MoveSpeed * Time.deltaTime, 0, dir.magnitude);
+            //transform.position += dir.normalized * moveDist;
         }
     }
 
     protected void UpdateCamera()
     {
         Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Plane GroupPlane = new Plane(Vector3.up, Vector3.zero);
+        Plane GroupPlane = new Plane(Vector3.up, transform.position);
 
         float rayLength;
 
@@ -167,7 +288,7 @@ public class PlayerController : BaseController
     private IEnumerator Dash()
     {
         Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Plane GroupPlane = new Plane(Vector3.up, Vector3.zero);
+        Plane GroupPlane = new Plane(Vector3.up, transform.position);
 
         float rayLength;
 
@@ -181,15 +302,15 @@ public class PlayerController : BaseController
             _isDashing = true;
             bool originalGravity = true;
             _rb.useGravity = false;
-
             _rb.velocity = dashDirection.normalized * _stat.DashingSpeed;
 
             yield return new WaitForSeconds(_stat.DashingTime);
-            _rb.useGravity = originalGravity;
             _isDashing = false;
             yield return new WaitForSeconds(_stat.DashingCooldown);
+
             _canDash = true;
             _canMove = true;
+            _rb.useGravity = originalGravity;
             _rb.velocity = Vector3.zero;
         }
 
@@ -204,6 +325,7 @@ public class PlayerController : BaseController
             transform.rotation = Quaternion.Lerp(transform.rotation, quat, 20 * Time.deltaTime);
         }
     }
+
     void OnHitEvent()
     {
         if (_lockTarget != null)

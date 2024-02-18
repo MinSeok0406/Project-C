@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class WorldScene : BaseScene
 {
-    
-
     protected override void Init()
     {
         base.Init();
