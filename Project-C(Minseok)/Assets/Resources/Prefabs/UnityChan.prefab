@@ -2893,7 +2893,7 @@ Animator:
   m_GameObject: {fileID: 5035296124710492663}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 8f0565f23a2b58541a475bd3c1393052, type: 3}
-  m_Controller: {fileID: 9100000, guid: 49c4f504f2b6b554cad6e62144d10874, type: 2}
+  m_Controller: {fileID: 9100000, guid: 9edb647f2d4acad419449292a577b851, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2927,6 +2927,8 @@ MonoBehaviour:
   Sword: {fileID: 5035296125469829134}
   HandGun: {fileID: 2961773520077467571, guid: 33df0c9fef326c1439d534be1cfba273, type: 3}
   ShotGun: {fileID: 1073841256836370008, guid: 8a81c26791e365941a91d81bb4ed94e4, type: 3}
+  _attackRate: 3
+  _range: 100
 --- !u!114 &5035296124710492658
 MonoBehaviour:
   m_ObjectHideFlags: 0

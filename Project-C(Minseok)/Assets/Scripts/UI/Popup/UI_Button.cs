@@ -9,34 +9,22 @@ public class UI_Button : UI_Popup
 {
     enum Buttons
     {
-        StartButton,
-        LoadButton,
-        OptionButton,
-        GameoverButton,
-        PointButton
+        
     }
 
     enum Texts
     {
-        EnterText,
-        TitleText,
-        StartText,
-        LoadText,
-        OptionText,
-        GameoverText,
-        PointText,
-        ScoreText,
+        
     }
 
     enum GameObjects
     {
-        TestObject,
+        
     }
 
     enum Images
     {
-        ItemIcon,
-        Craft,
+        
     }
 
     public override void Init()
@@ -60,12 +48,12 @@ public class UI_Button : UI_Popup
         //BindEvent(go, (PointerEventData data) => { go.transform.position = data.position; }, Define.UIEvent.Drag);
     }
 
-    int _score = 0;
+    /*int _score = 0;
 
     public void OnButtonClicked(PointerEventData data)
     {
         _score++;
         GetText((int)Texts.ScoreText).text = $"점수 : {_score}";
-    }
+    }*/
 
 }

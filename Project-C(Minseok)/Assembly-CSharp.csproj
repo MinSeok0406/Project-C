@@ -63,6 +63,7 @@
     <Compile Include="Assets\Scripts\Scenes\StartScene.cs" />
     <Compile Include="Assets\Scripts\Utils\Define.cs" />
     <Compile Include="Assets\Scripts\UI\Popup\UI_Button.cs" />
+    <Compile Include="Assets\Scripts\UI\WorldSpace\UI_NPC.cs" />
     <Compile Include="Assets\Scripts\Managers\Core\DataManager.cs" />
     <Compile Include="Assets\Scripts\UI\Craft\CraftManual.cs" />
     <Compile Include="Assets\Scripts\Managers\Core\PoolManager.cs" />

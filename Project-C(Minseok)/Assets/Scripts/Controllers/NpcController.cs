@@ -19,8 +19,8 @@ public class NpcController : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
-                Managers.UI.MakeWorldSpaceUI<UI_HPBar>(player.transform, "UI_NPC_Text");
+            if (gameObject.GetComponentInChildren<UI_NPC>() == null)
+                Managers.UI.MakeWorldSpaceUI<UI_NPC>(player.transform, "UI_NPC_Text");
         }
     }
 

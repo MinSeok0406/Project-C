@@ -380,6 +380,7 @@
 "Assets/Scripts/UI/UI_Base.cs"
 "Assets/Scripts/UI/UI_EventHandler.cs"
 "Assets/Scripts/UI/WorldSpace/UI_HPBar.cs"
+"Assets/Scripts/UI/WorldSpace/UI_NPC.cs"
 "Assets/Scripts/Utils/Define.cs"
 "Assets/Scripts/Utils/Extension.cs"
 "Assets/Scripts/Utils/Util.cs"

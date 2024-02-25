@@ -97,7 +97,7 @@ public class PlayerController : BaseController
             Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);
     }
 
-    protected override void UpdateMoving()
+    /*protected override void UpdateMoving()
     {
         // 몬스터가 내 사정거리보다 가까우면 공격
         if (_lockTarget != null)
@@ -110,7 +110,7 @@ public class PlayerController : BaseController
                 return;
             }
         }
-    }
+    }*/
 
     protected void Update()
     {
@@ -120,7 +120,7 @@ public class PlayerController : BaseController
         UpdateCamera();
 
         if (_canMove)
-            UpdateMove();
+            UpdateMoving();
 
         if (Input.GetMouseButtonDown(1))
         {
@@ -226,11 +226,11 @@ public class PlayerController : BaseController
 
         if (Input.GetKeyDown(KeyCode.F) && Util.FindChild(root, "Dialogue", true) == null)
         {
-            Managers.UI.ShowPopupUI<UI_Button>("Dialogue");
+            Managers.UI.ShowPopupUI<UI_Popup>("Dialogue");
         }
     }
 
-    private void UpdateMove()
+    protected override void UpdateMoving()
     {
         bool isOnSlope = IsOnSlope();
         bool isGrounded = IsGrounded();
