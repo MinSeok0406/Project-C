@@ -8,7 +8,7 @@ public class InputManager   // 상태 체크
 {
     public Action KeyAction = null;
     public Action<Define.MouseEvent> MouseAction = null;
-    public Action<Define.KeyEvent> Key = null;
+    //public Action<Define.KeyEvent> Key = null;
 
     bool _pressed = false;
     float _pressedTime = 0;
@@ -22,28 +22,25 @@ public class InputManager   // 상태 체크
         if (Input.anyKey && KeyAction != null)
             KeyAction.Invoke();
 
-        if (Key != null)
+        if (MouseAction != null)
         {
             if (Input.anyKey)
             {
                 if (!_pressed)
                 {
-                    //MouseAction.Invoke(Define.MouseEvent.PointerDown);
-                    Key.Invoke(Define.KeyEvent.MoveDown);
+                    MouseAction.Invoke(Define.MouseEvent.PointerDown);
                     _pressedTime = Time.time;
                 }
-                //MouseAction.Invoke(Define.MouseEvent.Press);
-                Key.Invoke(Define.KeyEvent.MovePress);
+                MouseAction.Invoke(Define.MouseEvent.Press);
                 _pressed = true;
             }
             else
             {
                 if (_pressed)
                 {
-                    /*if (Time.time < _pressedTime + 0.2f)
-                        MouseAction.Invoke(Define.MouseEvent.Click);*/
-                    //MouseAction.Invoke(Define.MouseEvent.PointerUp);
-                    Key.Invoke(Define.KeyEvent.MoveUp);
+                    if (Time.time < _pressedTime + 0.2f)
+                        MouseAction.Invoke(Define.MouseEvent.Click);
+                    MouseAction.Invoke(Define.MouseEvent.PointerUp);
                 }
                 _pressed = false;
                 _pressedTime = 0;
@@ -55,6 +52,5 @@ public class InputManager   // 상태 체크
     {
         KeyAction = null;
         MouseAction = null;
-        Key = null;
     }
 }

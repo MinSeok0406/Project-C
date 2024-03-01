@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class NpcController : MonoBehaviour
 {
-    GameObject player = Managers.Game.GetPlayer();
+    private GameObject player = Managers.Game.GetPlayer();
     public Define.WorldObject WorldObjectType { get; protected set; } = Define.WorldObject.Unknown;
 
     public void init()
@@ -19,8 +19,8 @@ public class NpcController : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
-                Managers.UI.MakeWorldSpaceUI<UI_HPBar>(player.transform, "UI_NPC_Text");
+            if (gameObject.GetComponentInChildren<UI_NPC>() == null)
+                Managers.UI.MakeWorldSpaceUI<UI_NPC>(player.transform, "UI_NPC_Text");
         }
     }
 
