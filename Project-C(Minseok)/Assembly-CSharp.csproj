@@ -81,6 +81,7 @@
     <Compile Include="Assets\Scripts\Managers\Core\Poolable.cs" />
     <Compile Include="Assets\Scripts\Data\Data.Contents.cs" />
     <Compile Include="Assets\Scripts\Contents\PlayerStat.cs" />
+    <Compile Include="Assets\Scripts\Controllers\DialogController.cs" />
     <Compile Include="Assets\C\ModularFirstPersonController\FirstPersonController\FirstPersonController.cs" />
     <Compile Include="Assets\Scripts\Controllers\BaseController.cs" />
     <Compile Include="Assets\Scripts\Weapon\Gun\Bullet.cs" />

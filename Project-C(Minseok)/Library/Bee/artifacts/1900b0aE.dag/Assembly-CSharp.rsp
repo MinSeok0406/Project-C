@@ -350,6 +350,7 @@
 "Assets/Scripts/Controllers/BaseController.cs"
 "Assets/Scripts/Controllers/CameraController.cs"
 "Assets/Scripts/Controllers/CursorController.cs"
+"Assets/Scripts/Controllers/DialogController.cs"
 "Assets/Scripts/Controllers/MonsterController.cs"
 "Assets/Scripts/Controllers/NpcController.cs"
 "Assets/Scripts/Controllers/PlayerController.cs"

@@ -33,8 +33,10 @@ public class PlayerController : BaseController
     public float _attackRate = 3.0f;
     public float _range = 100.0f;
     private float _attackTimer;
-    private bool _canDash = true;
-    private bool _isDashing = true;
+    private bool _canAvoid = true;
+    private bool _isAvoiding = true;
+    private bool _canSkill_2 = true;
+    private bool _isSkill_2 = true;
     private bool _canMove = true;
 
     public Define.Weapons Weapon { get; protected set; } = Define.Weapons.Unknown;
@@ -114,7 +116,7 @@ public class PlayerController : BaseController
 
     protected void Update()
     {
-        if (IsOnSlope() || _canDash)
+        if (IsOnSlope() || _canAvoid)
             _rb.useGravity = true;
 
         UpdateCamera();
@@ -122,14 +124,18 @@ public class PlayerController : BaseController
         if (_canMove)
             UpdateMoving();
 
-        if (Input.GetMouseButtonDown(1))
+        // 스킬 3
+        if (Input.GetKeyDown(KeyCode.E))
         {
             WeaponSwap();
             WeaponEquip();
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && _canDash)
-            StartCoroutine(Dash());
+        if (Input.GetMouseButtonDown(1) && _canSkill_2 && Weapon == Define.Weapons.Sword)
+            StartCoroutine(Skill_2());
+
+        if (Input.GetKeyDown(KeyCode.Space) && _canAvoid)
+            StartCoroutine(Avoid());
 
         NpcScript("UI_NPC_Text");
 
@@ -226,8 +232,13 @@ public class PlayerController : BaseController
 
         if (Input.GetKeyDown(KeyCode.F) && Util.FindChild(root, "Dialogue", true) == null)
         {
-            Managers.UI.ShowPopupUI<UI_Popup>("Dialogue");
+            Managers.UI.ShowPopupUI<UI_Popup>("Script/Dialogue");
         }
+    }
+
+    private void ArtifactEquip()
+    {
+
     }
 
     protected override void UpdateMoving()
@@ -285,7 +296,7 @@ public class PlayerController : BaseController
         }
     }
 
-    private IEnumerator Dash()
+    private IEnumerator Skill_2()
     {
         Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         Plane GroupPlane = new Plane(Vector3.up, transform.position);
@@ -297,18 +308,49 @@ public class PlayerController : BaseController
             Vector3 _mouse = cameraRay.GetPoint(rayLength);
             Vector3 dashDirection = (_mouse - transform.position).normalized;
 
-            _canDash = false;
+            _canSkill_2 = false;
             _canMove = false;
-            _isDashing = true;
+            _isSkill_2 = true;
             bool originalGravity = true;
             _rb.useGravity = false;
             _rb.velocity = dashDirection.normalized * _stat.DashingSpeed;
 
             yield return new WaitForSeconds(_stat.DashingTime);
-            _isDashing = false;
+            _isSkill_2 = false;
             yield return new WaitForSeconds(_stat.DashingCooldown);
 
-            _canDash = true;
+            _canSkill_2 = true;
+            _canMove = true;
+            _rb.useGravity = originalGravity;
+            _rb.velocity = Vector3.zero;
+        }
+
+    }
+
+    private IEnumerator Avoid()
+    {
+        Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Plane GroupPlane = new Plane(Vector3.up, transform.position);
+
+        float rayLength;
+
+        if (GroupPlane.Raycast(cameraRay, out rayLength))
+        {
+            Vector3 _mouse = cameraRay.GetPoint(rayLength);
+            Vector3 dashDirection = (_mouse - transform.position).normalized;
+
+            _canAvoid = false;
+            _canMove = false;
+            _isAvoiding = true;
+            bool originalGravity = true;
+            _rb.useGravity = false;
+            _rb.velocity = dashDirection.normalized * _stat.DashingSpeed;
+
+            yield return new WaitForSeconds(_stat.DashingTime);
+            _isAvoiding = false;
+            yield return new WaitForSeconds(_stat.DashingCooldown);
+
+            _canAvoid = true;
             _canMove = true;
             _rb.useGravity = originalGravity;
             _rb.velocity = Vector3.zero;

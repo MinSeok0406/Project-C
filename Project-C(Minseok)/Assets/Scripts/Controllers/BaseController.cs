@@ -23,7 +23,25 @@ public abstract class BaseController : MonoBehaviour
 			_state = value;
 
 			Animator anim = GetComponent<Animator>();
+
+			// Old
 			switch (_state)
+			{
+				case Define.State.Die:
+					break;
+				case Define.State.Idle:
+					anim.CrossFade("WAIT", 0.1f);
+					break;
+				case Define.State.Moving:
+					anim.CrossFade("RUN", 0.1f);
+					break;
+				case Define.State.Skill:
+					anim.CrossFade("ATTACK", 0.1f, -1, 0);
+					break;
+			}
+
+			// New
+			/*switch (_state)
 			{
 				case Define.State.Die:
 					break;
@@ -36,7 +54,7 @@ public abstract class BaseController : MonoBehaviour
 				case Define.State.Skill:
 					anim.CrossFade("ATTACK", 0.1f, -1, 0);
 					break;
-			}
+			}*/
 		}
 	}
 
