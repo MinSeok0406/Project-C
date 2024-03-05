@@ -9,10 +9,12 @@ public class Bullet : MonoBehaviour
     public int damage;
 
     GameObject _player = Managers.Game.GetPlayer();
+    Rigidbody _rb;
 
-    private void Update()
+    private void Awake()
     {
-        transform.position += _player.transform.forward * 100.0f * Time.deltaTime;
+        _rb = GetComponent<Rigidbody>();
+        _rb.AddForce(_player.transform.forward * 100000.0f * Time.deltaTime);
     }
 
     private void OnCollisionEnter(Collision collision)
